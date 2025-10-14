@@ -16,7 +16,8 @@ type Server struct {
 
 func NewServerInstance(resizerSvc ports.ResizerService, cfg config.Config) *Server {
 	server := &Server{resizerSvc: resizerSvc, serverMultiplexer: http.NewServeMux(), config: cfg}
-	server.serverMultiplexer.HandleFunc("/resize", server.Resize) // Register the resize handler from get_resized_image.go
+	server.serverMultiplexer.HandleFunc("/resize", server.Resize)      // Register the sync resize handler
+	server.serverMultiplexer.HandleFunc("/resize-async", server.ResizeAsync) // Register the async resize handler
 	server.config = cfg
 	return server
 }
