@@ -30,12 +30,6 @@ type Config struct {
 	Server struct {
 		Port string
 	}
-
-	Worker struct {
-		Concurrency int
-		MaxRetry    int
-		TaskTimeout time.Duration
-	}
 }
 
 func Load() Config {
@@ -60,11 +54,6 @@ func Load() Config {
 	// Server
 	cfg.Server.Port = getEnv("SERVER_PORT", ":8080")
 
-	// Worker
-	cfg.Worker.Concurrency = getEnvAsInt("WORKER_CONCURRENCY", 5)
-	cfg.Worker.MaxRetry = getEnvAsInt("WORKER_MAX_RETRY", 3)
-	cfg.Worker.TaskTimeout = time.Duration(getEnvAsInt("WORKER_TASK_TIMEOUT_SECONDS", 60)) * time.Second
-
 	fmt.Printf("\n%-15s | %-10s\n", "Config Key", "Value")
 	fmt.Println(strings.Repeat("-", 30))
 	fmt.Printf("%-15s | %-10s\n", "ENV", cfg.App.Env)
@@ -75,9 +64,6 @@ func Load() Config {
 	fmt.Printf("%-15s | %-10v\n", "Redis TTL", cfg.Redis.TTL)
 	fmt.Printf("%-15s | %-10v\n", "HTTP Timeout", cfg.HTTP.Timeout)
 	fmt.Printf("%-15s | %-10s\n", "Server Port", cfg.Server.Port)
-	fmt.Printf("%-15s | %-10d\n", "Worker Concur", cfg.Worker.Concurrency)
-	fmt.Printf("%-15s | %-10d\n", "Worker Retry", cfg.Worker.MaxRetry)
-	fmt.Printf("%-15s | %-10v\n", "Worker Timeout", cfg.Worker.TaskTimeout)
 	fmt.Println()
 
 	return cfg
